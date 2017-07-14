@@ -30,7 +30,26 @@ class Lang {
      * @var array
      */
     private static $_collection = [];
+    /**
+     * Configuración de la clase lenguaje
+     * @var array
+     */
+    private static $_config = [
+        'strict_mode' => FALSE
+    ];
     
+    const STRICT_MODE = 1;
+    
+    /**
+     * Configura el manejo de la clase Lang
+     */
+    public static function configure() {
+        $args = func_get_args();
+        if (in_array(self::STRICT_MODE, $args)) {
+            self::$_config['strict_mode'] = TRUE;
+        }
+    }
+
     /**
      * Carga un idioma solicitado
      * @param string $name Nombre del archivo requerido
@@ -38,19 +57,20 @@ class Lang {
      * @return array Devuele un array con el idioma solicitado
      * @throws \Exception
      */
-    public static function load($name, $request_lang = NULL) {
+    public static function load($name, $request_lang = NULL, $path = NULL) {
         $lang = $request_lang ? $request_lang : (Config::exist('Global.lang') ? Config::get('Global.lang') : 'es');
 
         if ( !Hash::check(self::$_collection, $name . '.' . $lang) ) {
-            $lang_file = PO_PATH_LANGS . DS . $name . '.' . $lang . '.php';
+            $lang_file = ($path ? $path : dirname(dirname(dirname(dirname(dirname(__FILE__))))) . DIRECTORY_SEPARATOR . 'langs')
+                    . DIRECTORY_SEPARATOR . $name . '.' . $lang . '.php';
 
             if ( !is_file($lang_file) ) {
-                return NULL;
+                throw new \Exception(sprintf('No se encontr&oacute; el archivo (%s) de lenguaje.', $lang_file));
             }
             
             $lang_array = include $lang_file;
             if ( !is_array($lang_array) ) {
-                throw new \Exception(sprintf('El archivo (%s) debe retornar un array', $lang_file));
+                throw new \DomainException(sprintf('El archivo (%s) debe retornar en un array', $lang_file));
             }
 
             self::$_collection = Hash::insert(self::$_collection, $name . '.' . $lang, $lang_array);

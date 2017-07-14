@@ -44,6 +44,7 @@ class Hash {
         
         return $result;
     }
+    
     /**
      * Busca la interseccion con otro array y la devuelve
      * @param array $array1

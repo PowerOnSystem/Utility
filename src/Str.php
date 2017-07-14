@@ -58,5 +58,18 @@ class Str {
         }
 
         return implode(' ', $result);
-    }    
+    }
+    
+    /**
+     * Junta de forma natural un array Ej: <code>natjoin(['coca', 'pepsi', 'fanta']) //Mostraría coca, pepsi y fanta</code>
+     * @param array $options Array con opciones a juntar
+     * @param string $join_string Lenguaje del último resultado por defecto es y
+     * @return string
+     */
+    public static function natjoin(array $options, $join_string = 'y') {
+        $last  = array_slice($options, -1);
+        $first = join(', ', array_slice($options, 0, -1));
+        $both  = array_filter(array_merge(array($first), $last), 'strlen');
+        return join(' ' . $join_string . ' ', $both);
+    }
 }
