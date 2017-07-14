@@ -72,4 +72,29 @@ class Str {
         $both  = array_filter(array_merge(array($first), $last), 'strlen');
         return join(' ' . $join_string . ' ', $both);
     }
+    
+    /**
+     * Serializa un Array en formato html para una etiqueta key="value"
+     * @param array $array El array a serializar
+     * @return string Devuelve una cadena con los datos serializados
+     */
+    public static function htmlserialize(array $array) {
+        return implode(' ', array_filter(array_map(function($v, $k) {
+            return $v !== NULL && (is_string($v) || is_numeric($v)) ? $k . '="' . $v . '"' : ''; 
+        }, $array, array_keys($array))));
+    }
+    
+    /**
+     * Verifica si una cadena dada esta codificada en JSON
+     * @param string $string La cadena a verificar
+     * @return boolean
+     */
+    function isjson($string) {
+        if ( $string && is_string($string) && !is_numeric($string) ) {
+            json_decode($string);
+            return (json_last_error() == JSON_ERROR_NONE);
+        }
+
+        return FALSE;
+    }
 }
