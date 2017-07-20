@@ -1,9 +1,9 @@
 {
-    "name": "poweronsystem/utility",
+    "name": "poweronsystem/webutility",
     "type": "library",
     "description": "Utilities for php programmers.",
     "keywords": ["utilities", "string formatter", "array hash", "inflector"],
-    "homepage": "https://github.com/poweronsystem/utility",
+    "homepage": "https://github.com/poweronsystem/webutility",
     "license": "GPL",
     "authors": [
         {
