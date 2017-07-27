@@ -61,9 +61,13 @@ class Lang {
         $lang = $request_lang ? $request_lang : (Config::exist('Global.lang') ? Config::get('Global.lang') : 'es');
 
         if ( !Hash::check(self::$_collection, $name . '.' . $lang) ) {
-            $lang_file = ($path ? $path : dirname(dirname(dirname(dirname(dirname(__FILE__))))) . DIRECTORY_SEPARATOR . 'langs')
+            $lang_file = dirname(dirname(dirname(dirname(dirname(__FILE__))))) . DIRECTORY_SEPARATOR . 'langs'
                     . DIRECTORY_SEPARATOR . $name . '.' . $lang . '.php';
 
+            if ( !is_file($lang_file) && $path ) {
+                $lang_file = $path . DIRECTORY_SEPARATOR . $name . '.' . $lang . '.php';
+            }
+            
             if ( !is_file($lang_file) ) {
                 throw new \Exception(sprintf('No se encontr&oacute; el archivo (%s) de lenguaje.', $lang_file));
             }
