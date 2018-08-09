@@ -29,7 +29,7 @@ class Session {
     /**
      * Elimina todas las sesiones activas sin importar el ID
      */
-    public function destroy() {
+    public static function destroy() {
         $_SESSION = [];
         if ( ini_get("session.use_cookies") ) {
             $params = session_get_cookie_params();
@@ -46,7 +46,7 @@ class Session {
      * @param string $name
      * @return mix El valor solicitado
      */
-    public function read($name) {
+    public static function read($name) {
         $var = Hash::get($_SESSION, $name);
         return $var;
     }
@@ -56,7 +56,7 @@ class Session {
      * @param string $name El nombre de la variable de sesion
      * @param mix $value El valor a escribir
      */
-    public function write($name, $value) {
+    public static function write($name, $value) {
         $_SESSION = Hash::write($_SESSION, $name, $value);
         return $value;
     }
@@ -66,7 +66,7 @@ class Session {
      * @param string $name El nombre de la variable de sesion a insertar
      * @param mix $value El nuevo valor
      */
-    public function push($name, $value) {
+    public static function push($name, $value) {
         $_SESSION = Hash::insert($_SESSION, $name, $value);
         return $value;
     }
@@ -76,7 +76,7 @@ class Session {
      * @param string $name El nombre del valor a obtener
      * @return type
      */
-    public function consume($name) {
+    public static function consume($name) {
         $value = $this->read($name);
         $this->remove($name);
         return $value;
@@ -86,7 +86,16 @@ class Session {
      * Elimina un valor de una sesion
      * @param string $name El nombre de la variable de sesion a eliminar
      */
-    public function remove($name) {
+    public static function remove($name) {
         $_SESSION = Hash::remove($_SESSION, $name);
+    }
+    
+    /**
+     * Verifica si una variable de sesión existe
+     * @param string $name Nombre de la varible de sesión
+     * @return bool
+     */
+    public static function exist($name) {
+        return Hash::check($_SESSION, $name);
     }
 }
