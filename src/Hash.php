@@ -101,6 +101,37 @@ class Hash {
     }
     
     /**
+     * Combina el primer array con el segundo intercambiando valores y conservando la estructura
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
+    private static function _merge(array $array1, array $array2) {
+        $newArray = [];
+        foreach ($array1 as $key => $value) {
+            if ( key_exists($key, $array2) ) {
+                $newArray[$key] = is_array($value) && is_array($array2[$key])
+                    ? self::_merge($value, $array2[$key]) 
+                    : $array2[$key];
+            } else {
+                $newArray[$key] = $value;
+            }
+        }
+        
+        foreach ($array2 as $key => $value) {
+            if ( key_exists($key, $newArray) ) {
+                $newArray[$key] = is_array($value)
+                    ? self::_merge($value, $newArray[$key]) 
+                    : ($value != $newArray[$key] ? $newArray[$key] : $value);
+            } else {
+                $newArray[$key] = $value;
+            }
+        }
+        
+        return $newArray;
+    }
+    
+    /**
      * Devuelve el valor especificado de un array
      * @param array $array
      * @param string $path
@@ -121,8 +152,8 @@ class Hash {
      */
     public static function write(array $array, $path, $value) {
         $read = self::_read($path, $value);
-        
-        return array_merge($array, $read);
+
+        return self::_merge($array, $read);
     }
     
     /**
