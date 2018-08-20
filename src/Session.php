@@ -52,12 +52,22 @@ class Session {
     }
     
     /**
-     * Escribe o modifica un valor en la sesion
+     * Escribe un valor en la sesion
      * @param string $name El nombre de la variable de sesion
      * @param mix $value El valor a escribir
      */
     public static function write($name, $value) {
         $_SESSION = Hash::write($_SESSION, $name, $value);
+        return $value;
+    }
+    
+    /**
+     * Escribe o modifica un valor en la sesion
+     * @param string $name El nombre de la variable de sesion
+     * @param mix $value El valor a escribir
+     */
+    public static function merge($name, $value) {
+        $_SESSION = Hash::merge($_SESSION, $name, $value);
         return $value;
     }
     

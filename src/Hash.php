@@ -144,13 +144,26 @@ class Hash {
     }
     
     /**
-     * Agrega un elemento a un array
+     * Agrega un elemento a un array o reemplaza un valor existente
      * @param array $array
      * @param string $path
      * @param mix $value
      * @return array el array con el nuevo elemento
      */
     public static function write(array $array, $path, $value) {
+        $read = self::_read($path, $value);
+
+        return array_merge($array, $read);
+    }
+    
+    /**
+     * Agrega un elemento a un array y combina los resultados
+     * @param array $array
+     * @param string $path
+     * @param mix $value
+     * @return array el array con el nuevo elemento
+     */
+    public static function merge(array $array, $path, $value) {
         $read = self::_read($path, $value);
 
         return self::_merge($array, $read);
