@@ -31,14 +31,15 @@ class Inflector {
      * @return string
      */
     public static function singularize($text) {
-        $length = strlen($text);
-        $last_word = substr($text, $length - 3);
-        $return = $text;
-        switch ($last_word) {
-            case 'ies'  : $return = substr($text, 0, $length - 3) . 'y'; break;
-            default     : $return = substr($text, 0, $length - 1); break;
+        if (preg_match('/ies$/', $text)) {
+            return substr($text, 0, -3) . 'y';
+        } elseif (preg_match('/es$/', $text)) {
+            return substr($text, 0, -2);
+        } else if (preg_match('/s$/', $text)) {
+            return substr($text, 0, -1);
         }
-        return $return;
+        
+        return $text;
     }
     
     /**
