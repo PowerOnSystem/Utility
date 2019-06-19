@@ -4,7 +4,7 @@
     "description": "Utilities for php programmers.",
     "keywords": ["utilities", "string formatter", "array hash", "inflector"],
     "homepage": "https://github.com/poweronsystem/webutility",
-    "license": "GPL",
+    "license": "MIT",
     "authors": [
         {
             "name": "Lucas Sosa",
