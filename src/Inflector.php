@@ -33,7 +33,7 @@ class Inflector {
     public static function singularize($text) {
         if (preg_match('/ies$/', $text)) {
             return substr($text, 0, -3) . 'y';
-        } elseif (preg_match('/es$/', $text)) {
+        } elseif (preg_match('/es$/', $text) && !preg_match('/les$/', $text)) {
             return substr($text, 0, -2);
         } else if (preg_match('/s$/', $text)) {
             return substr($text, 0, -1);
@@ -55,6 +55,16 @@ class Inflector {
             default     : $return = $text . 's'; break;
         }
         return $return;
+    }
+    
+    /**
+     * Cameliza una palabara quitando _ y capitalizando siguiente letra
+     * @param string $text
+     * @return string
+     */
+    public static function camelize($text) {
+      $glue = preg_match('/\-/', $text) ? '-' : '_';
+      return implode('', array_map(function($t){ return ucfirst($t); }, explode($glue, $text)));
     }
     
     /**
