@@ -33,7 +33,7 @@ class Inflector {
     public static function singularize($text) {
         if (preg_match('/ies$/', $text)) {
             return substr($text, 0, -3) . 'y';
-        } elseif (preg_match('/es$/', $text) && !preg_match('/les$/', $text)) {
+        } elseif (preg_match('/es$/', $text) && !preg_match('/les$/', $text) && !preg_match('/ees$/', $text)) {
             return substr($text, 0, -2);
         } else if (preg_match('/s$/', $text)) {
             return substr($text, 0, -1);
@@ -59,12 +59,29 @@ class Inflector {
     
     /**
      * Cameliza una palabara quitando _ y capitalizando siguiente letra
-     * @param string $text
+     * @param string $word
+     * @param string $delimiter
      * @return string
      */
-    public static function camelize($text) {
-      $glue = preg_match('/\-/', $text) ? '-' : '_';
-      return implode('', array_map(function($t){ return ucfirst($t); }, explode($glue, $text)));
+    public static function camelize($word, $delimiter = '_') {
+        $elements = explode($delimiter, $word);
+
+        for ($i = 0; $i < count($elements); $i++) {
+            if (0 == $i) {
+                $elements[$i] = strtolower($elements[$i]);
+            } else {
+                $elements[$i] = strtolower($elements[$i]);
+                $elements[$i] = ucwords($elements[$i]);
+            }
+        }
+
+        return implode('', $elements);
+    }
+    
+    public static function mixify($word, $delimiter = '_') {
+        $lower = strtolower($word);
+        $upper = ucwords($lower, $delimiter);
+        return str_replace($delimiter, '', $upper);
     }
     
     /**
